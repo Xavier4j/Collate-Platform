@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-04-21
  */
 public interface StudentMapper extends BaseMapper<Student> {
-    Task getTask(Long userId);
+    Task getTask(Long userId, Long studentId);
 }

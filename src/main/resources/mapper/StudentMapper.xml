@@ -23,16 +23,24 @@
 
     <select id="getTask" parameterType="java.lang.Long" resultMap="taskMap">
         SELECT
-            count(*) AS total,
-            ( SELECT count(*) FROM collate_result WHERE same IS NOT NULL ) as completed,
-            student.*,
-            same
+        ( SELECT count(*) FROM student ) AS total,
+        ( SELECT count(*) FROM collate_result WHERE same IS NOT NULL ) as completed,
+        student.*,
+        same
         FROM
-            `student`
-            LEFT JOIN collate_result ON student.id = collate_result.id
-            AND collator = ${userId}
+        `student`
+        LEFT JOIN collate_result ON student.id = collate_result.id
+        AND collator = ${userId}
         WHERE
-            ISNULL( same )
-        LIMIT 1
+        <choose>
+            <when test="studentId != null and studentId != ''">
+                student.id=#{studentId}
+            </when>
+            <otherwise>
+                ISNULL( same )
+                LIMIT 1
+            </otherwise>
+        </choose>
+
     </select>
 </mapper>

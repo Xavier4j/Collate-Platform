@@ -1,9 +1,12 @@
 package club.doyoudo.platform.service.impl;
 
+import club.doyoudo.platform.entity.CollateResult;
 import club.doyoudo.platform.entity.Student;
 import club.doyoudo.platform.mapper.StudentMapper;
+import club.doyoudo.platform.service.ICollateResultService;
 import club.doyoudo.platform.service.IStudentService;
 import club.doyoudo.platform.vo.Task;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.slf4j.Logger;
@@ -27,6 +30,8 @@ import java.util.Objects;
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 
+    @Resource
+    ICollateResultService collateResultService;
     @Resource
     StudentMapper studentMapper;
 
@@ -59,8 +64,20 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public Task getTask(Long userId, Long id) {
-        return studentMapper.getTask(userId);
+    public Task getTask(Long userId) {
+        return studentMapper.getTask(userId, null);
+    }
+
+    @Override
+    public Task getLastTask(Long userId, Long currentStudentId) {
+        CollateResult currentCollateResult = collateResultService.getById(currentStudentId);
+        QueryWrapper<CollateResult> collateResultQueryWrapper = new QueryWrapper<>();
+        collateResultQueryWrapper.orderByDesc("update_time");
+        if (currentCollateResult != null) {
+            collateResultQueryWrapper.lt("update_time", currentCollateResult.getUpdateTime());
+        }
+        CollateResult lastCollateResult = collateResultService.getOne(collateResultQueryWrapper);
+        return studentMapper.getTask(userId, lastCollateResult.getId());
     }
 
     public void traverseAdmissionPhotos(File file) {

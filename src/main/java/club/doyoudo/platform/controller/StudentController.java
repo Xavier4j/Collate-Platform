@@ -31,8 +31,6 @@ public class StudentController {
     @Resource
     IStudentService studentService;
     @Resource
-    ICollateResultService collateResultService;
-    @Resource
     IUserService userService;
 
     @ApiOperation(value = "获取核对任务", notes = "获取核对任务，即一个学生的信息还有本人任务情况", produces = "application/json", httpMethod = "GET")
@@ -51,19 +49,13 @@ public class StudentController {
 
     @ApiOperation(value = "获取上一个任务", notes = "获取上一个任务，即一个学生的信息还有本人任务情况", produces = "application/json", httpMethod = "GET")
     @RequestMapping("/get-last-task")
-    public ResponseWrapper getLastTask(Long userId, Long id) {
+    public ResponseWrapper getLastTask(Long userId, Long currentStudentId) {
         User user = userService.getById(userId);
         if (!user.getStatus()) {
             return new ResponseWrapper(true, 601, "当前用户不具有核对授权!", null);
         }
-        CollateResult currentCollateResult = collateResultService.getById(id);
-        QueryWrapper<CollateResult> collateResultQueryWrapper = new QueryWrapper<>();
-        collateResultQueryWrapper.orderByDesc("update_time");
-        if (currentCollateResult != null) {
-            collateResultQueryWrapper.lt("update_time", currentCollateResult.getUpdateTime());
-        }
-        CollateResult lastCollateResult = collateResultService.getOne(collateResultQueryWrapper);
-        Task task = studentService.getTask(userId,lastCollateResult.getId());
+
+        Task task = studentService.getLastTask(userId, currentStudentId);
         if (task != null) {
             return new ResponseWrapper(true, 200, "加载任务成功!", task);
         }

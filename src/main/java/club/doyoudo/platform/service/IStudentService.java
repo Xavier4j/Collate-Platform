@@ -15,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IStudentService extends IService<Student> {
     void LoadStudentPhotos();
 
-    Task getTask(Long userId, Long id);
+    Task getTask(Long userId);
+
+    Task getLastTask(Long userId, Long currentStudentId);
 }

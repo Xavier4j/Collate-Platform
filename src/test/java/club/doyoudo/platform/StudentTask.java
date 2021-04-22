@@ -24,4 +24,10 @@ public class StudentTask {
         System.out.println(task);
     }
 
+    @Test
+    public void getLastTaskTest() {
+        Task task = studentService.getLastTask(1384379039043842050L,null);
+        System.out.println(task);
+    }
+
 }
