@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.doyoudo.platform.mapper.StudentMapper">
+
+    <resultMap id="taskMap" type="club.doyoudo.platform.vo.Task">
+        <result column="completed" property="completed"/>
+        <result column="total" property="total"/>
+        <result column="same" property="same1"/>
+        <association property="student" javaType="club.doyoudo.platform.entity.Student">
+            <result column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="gender" property="gender"/>
+            <result column="candidate_number" property="candidateNumber"/>
+            <result column="id_card_number" property="idCardNumber"/>
+            <result column="province" property="province"/>
+            <result column="phone" property="phone"/>
+            <result column="faculty" property="faculty"/>
+            <result column="major" property="major"/>
+            <result column="admission_photo_url" property="admissionPhotoUrl"/>
+            <result column="entrance_photo_url" property="entrancePhotoUrl"/>
+        </association>
+    </resultMap>
+
+    <select id="getTask" parameterType="java.lang.Long" resultMap="taskMap">
+        SELECT
+            count(*) AS total,
+            ( SELECT count(*) FROM collate_result WHERE same IS NOT NULL ) as completed,
+            student.*,
+            same
+        FROM
+            `student`
+            LEFT JOIN collate_result ON student.id = collate_result.id
+            AND collator = ${userId}
+        WHERE
+            ISNULL( same )
+        LIMIT 1
+    </select>
+</mapper>
