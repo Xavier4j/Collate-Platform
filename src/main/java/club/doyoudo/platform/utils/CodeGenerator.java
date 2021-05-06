@@ -99,12 +99,13 @@ public class CodeGenerator {
             public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
                 // 判断自定义文件夹是否需要创建
                 // checkDir("调用默认方法创建的目录，自定义目录用");
-                if (fileType == FileType.CONTROLLER || fileType == FileType.SERVICE || fileType == FileType.SERVICE_IMPL || fileType == FileType.MAPPER || fileType == FileType.XML) {
-                    // 已经生成 controller 文件判断存在，不想重新生成返回 false
-                    return !new File(filePath).exists();
+
+                if (fileType == FileType.ENTITY) {
+                    // 只有Entity允许重新生成模板文件
+                    return true;
                 }
-                // 允许生成模板文件
-                return true;
+                // 其余文件判断是否存在，存在则不重新生成
+                return !new File(filePath).exists();
             }
         });
 

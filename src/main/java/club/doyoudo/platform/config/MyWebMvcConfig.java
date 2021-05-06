@@ -20,15 +20,9 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("file:E:/实验室文件/照片核对项目/Collate/static/images/");
-        registry.addResourceHandler("/videos/**").addResourceLocations("file:E:/毕业设计代做/法硕联盟论坛/LLMAlliance_forum/static/videos/");
-        registry.addResourceHandler("/others/**").addResourceLocations("file:E:/毕业设计代做/法硕联盟论坛/LLMAlliance_forum/static/others/");
-        registry.addResourceHandler("/**").addResourceLocations(
-                "classpath:/static/");
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
-                "classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations(
-                "classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/images/**").addResourceLocations("file:E:/laboratory/照片核对项目/Collate-Platform/static/images/");
+        registry.addResourceHandler("/videos/**").addResourceLocations("file:E:/laboratory/照片核对项目/Collate-Platform/static/videos/");
+        registry.addResourceHandler("/others/**").addResourceLocations("file:E:/laboratory/照片核对项目/Collate-Platform/static/others/");
     }
 
     @Override

@@ -1,7 +1,12 @@
 package club.doyoudo.platform.service;
 
 import club.doyoudo.platform.entity.CollateResult;
+import club.doyoudo.platform.entity.Student;
+import club.doyoudo.platform.vo.StudentWithAllResult;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICollateResultService extends IService<CollateResult> {
 
+    int getCompleted(Long userId);
+
+    CollateResult getByStudentId(Long userId,Long studentId);
+
+    List<StudentWithAllResult> exportStudentResult();
 }

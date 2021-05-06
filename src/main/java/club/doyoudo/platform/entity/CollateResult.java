@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author Xavier4j
- * @since 2021-04-21
+ * @since 2021-04-27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -20,9 +20,14 @@ public class CollateResult implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 学生id
+     * 核对结果id
      */
     private Long id;
+
+    /**
+     * 学生id
+     */
+    private Long studentId;
 
     /**
      * 核对人id
@@ -30,9 +35,9 @@ public class CollateResult implements Serializable {
     private Long collator;
 
     /**
-     * 是否是同一个人，0代表核对失败，1代表核对成功
+     * 核对结果：0代表不一致，1代表一致
      */
-    private Boolean same;
+    private Boolean result;
 
     /**
      * 最后核对时间
